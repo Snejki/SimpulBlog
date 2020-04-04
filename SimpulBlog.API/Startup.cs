@@ -1,20 +1,19 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Autofac;
+using AutoMapper;
+using FluentValidation.AspNetCore;
+using MediatR;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
-using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
 using SimpulBlog.API.Extensions;
 using SimpulBlog.API.Filters;
+using SimpulBlog.Domain;
 using SimpulBlog.Domain.Modules;
 using SimpulBlog.Infrastructure.Modules;
+using SimpulBlog.Infrastructure.Services.Abstract;
 
 namespace SimpulBlog.API
 {
@@ -39,7 +38,14 @@ namespace SimpulBlog.API
         {
             services.AddControllers(opts => {
                 opts.Filters.Add(typeof(ModelStateValidator));
-            });
+            }).AddFluentValidation(fv
+                => fv.RegisterValidatorsFromAssemblyContaining<IService>());
+
+            services.AddDbContext<BlogContext>(options
+                => options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+
+            services.AddMediatR(typeof(IService));
+            services.AddAutoMapper(typeof(IService));
         }
 
         public void ConfigureContainer(ContainerBuilder builder)
@@ -52,11 +58,6 @@ namespace SimpulBlog.API
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
-            if (env.IsDevelopment())
-            {
-                app.UseDeveloperExceptionPage();
-            }
-
             app.UseHttpsRedirection();
             app.UseGlobalExceptionHandler();
 
