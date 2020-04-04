@@ -1,12 +1,12 @@
-﻿using System;
+﻿using SimpulBlog.Domain.Entities.Abstract;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
 namespace SimpulBlog.Domain.Entities.Concrete
 {
-    public class Comment
+    public class Comment : Entity, IDeleteAble
     {
-        public long Id { get; set; }
         public string Text { get; set; }
         public DateTime AddedAt { get; set; }
         public DateTime? DeletedAt { get; set; }

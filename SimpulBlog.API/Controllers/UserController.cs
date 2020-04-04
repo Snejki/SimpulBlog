@@ -1,18 +1,20 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
+using MediatR;
 using Microsoft.AspNetCore.Mvc;
-using SimpulBlog.Infrastructure.Services.Abstract;
+using SimpulBlog.Infrastructure.Queries.UserQueries;
 
 namespace SimpulBlog.API.Controllers
 {
-    public class UserController : Controller
+    [Route("api/user")]
+    public class UserController : AbstractController
     {
-
-        public async Task<IActionResult> Index()
+        public UserController(IMediator mediator) : base(mediator)
         {
-            return Ok();
+
         }
+
+        [HttpPost]
+        public async Task<ActionResult> Add([FromBody] AddUserQuery query)
+            => Ok(await Handle(query));
     }
 }

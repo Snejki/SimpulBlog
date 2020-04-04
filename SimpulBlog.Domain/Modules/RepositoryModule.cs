@@ -1,9 +1,7 @@
 ﻿using Autofac;
 using SimpulBlog.Domain.Repositories.Abstract;
-using System;
-using System.Collections.Generic;
+using SimpulBlog.Domain.Repositories.Concrete;
 using System.Reflection;
-using System.Text;
 
 namespace SimpulBlog.Domain.Modules
 {
@@ -14,6 +12,10 @@ namespace SimpulBlog.Domain.Modules
             var assembly = typeof(RepositoryModule)
                 .GetTypeInfo()
                 .Assembly;
+
+            builder.RegisterGeneric(typeof(CommitRepository<>))
+                .As(typeof(ICommitRepository<>))
+                .InstancePerLifetimeScope();
 
             builder.RegisterAssemblyTypes(assembly)
                 .Where(x => x.IsAssignableTo<IRepository>())

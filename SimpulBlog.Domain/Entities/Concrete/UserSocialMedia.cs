@@ -1,13 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using SimpulBlog.Domain.Entities.Abstract;
 
 namespace SimpulBlog.Domain.Entities.Concrete
 {
-    public class UserSocialMedia
+    public class UserSocialMedia : Entity
     {
-        public long Id { get; set; }
-
         public long UserId { get; set; }
         public virtual User User { get; set; }
 

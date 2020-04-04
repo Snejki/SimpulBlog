@@ -1,14 +1,14 @@
 ﻿using SimpulBlog.Core.Enums;
 using SimpulBlog.Core.Exceptions;
 using SimpulBlog.Core.Extensions;
+using SimpulBlog.Domain.Entities.Abstract;
 using System;
 using System.Collections.Generic;
 
 namespace SimpulBlog.Domain.Entities.Concrete
 {
-    public class User
+    public class User : Entity, IDeleteAble
     {
-        public long Id { get; private set; }
         public string Email { get; private set; }
         public string Firstname { get; private set; }
         public string Lastname { get; private set; }
@@ -18,10 +18,11 @@ namespace SimpulBlog.Domain.Entities.Concrete
         public string Salt { get; private set; }
         public string ResetPasswordToken { get; private set; }
         public string EmailToken { get; private set; }
+        public bool IsActive { get; set; }
         public UserRole UserRole { get; private set; }
 
         public DateTime AddedAt { get; private set; }
-        public DateTime DeletedAt { get; private set; }
+        public DateTime? DeletedAt { get; private set; }
 
         public virtual ICollection<Article> Articles { get; private set; }
         public virtual ICollection<UserSocialMedia> UserSocialMedia { get; set; }
@@ -36,6 +37,7 @@ namespace SimpulBlog.Domain.Entities.Concrete
             SetPassword(hash, salt);
             SetUserRole(userRole);
             SetAddedAt(addedAt);
+            SetActive(true);
         }
 
         public void SetPassword(string hash, string salt)
@@ -82,6 +84,11 @@ namespace SimpulBlog.Domain.Entities.Concrete
         private void SetUserRole(UserRole userRole)
         {
             UserRole = userRole;
+        }
+
+        private void SetActive(bool active)
+        {
+            IsActive = active;
         }
     }
 }

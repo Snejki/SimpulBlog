@@ -1,12 +1,12 @@
-﻿using System;
+﻿using SimpulBlog.Domain.Entities.Abstract;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
 namespace SimpulBlog.Domain.Entities.Concrete
 {
-    public class ArticleView
+    public class ArticleView : Entity
     {
-        public long Id { get; set; }
         public string UserIdentifier { get; set; }
         public DateTime AddedAt { get; set; }
 

@@ -17,6 +17,7 @@ namespace SimpulBlog.Core.Exceptions
         }
 
         public static ErrorCode DomainValidationError => new ErrorCode(nameof(DomainValidationError), HttpStatusCode.UnprocessableEntity);
+        public static ErrorCode NoPermission => new ErrorCode(nameof(NoPermission), HttpStatusCode.UnprocessableEntity);
         public static ErrorCode FaultWhileSavingToDatabase => new ErrorCode(nameof(FaultWhileSavingToDatabase), HttpStatusCode.InternalServerError);
         public static ErrorCode EntityValidationException => new ErrorCode(nameof(EntityValidationException), HttpStatusCode.UnprocessableEntity);
         public static ErrorCode AlreadyExists => new ErrorCode(nameof(AlreadyExists), HttpStatusCode.Conflict);

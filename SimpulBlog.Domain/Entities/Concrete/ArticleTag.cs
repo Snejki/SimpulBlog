@@ -1,13 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using SimpulBlog.Domain.Entities.Abstract;
 
 namespace SimpulBlog.Domain.Entities.Concrete
 {
-    public class ArticleTag
+    public class ArticleTag : Entity
     {
-        public long Id { get; set; }
-
         public long ArticleId { get; set; }
         public virtual Article Article { get; set; }
 

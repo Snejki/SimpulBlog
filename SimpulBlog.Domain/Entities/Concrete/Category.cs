@@ -1,13 +1,12 @@
-﻿using System.Collections;
+﻿using SimpulBlog.Domain.Entities.Abstract;
 using System.Collections.Generic;
 
 namespace SimpulBlog.Domain.Entities.Concrete
 {
-    public class Category
+    public class Category : Entity
     {
-        public long Id { get; set; }
         public long Name { get; set; }
 
-        public ICollection<ArticleCategory> ArticleCategories{ get; set; }
+        public virtual ICollection<ArticleCategory> ArticleCategories{ get; set; }
     }
 }

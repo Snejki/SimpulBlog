@@ -1,11 +1,11 @@
-﻿using System;
+﻿using SimpulBlog.Domain.Entities.Abstract;
+using System;
 using System.Collections.Generic;
 
 namespace SimpulBlog.Domain.Entities.Concrete
 {
-    public class Article
+    public class Article : Entity, IDeleteAble
     {
-        public long Id { get; set; }
         public string Title { get; set; }
         public string TitlePhotoname { get; set; }
         public string Slug { get; set; }
