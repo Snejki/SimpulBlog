@@ -11,6 +11,8 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using SimpulBlog.API.Extensions;
+using SimpulBlog.API.Filters;
 using SimpulBlog.Domain.Modules;
 using SimpulBlog.Infrastructure.Modules;
 
@@ -35,7 +37,9 @@ namespace SimpulBlog.API
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddControllers();
+            services.AddControllers(opts => {
+                opts.Filters.Add(typeof(ModelStateValidator));
+            });
         }
 
         public void ConfigureContainer(ContainerBuilder builder)
@@ -54,6 +58,7 @@ namespace SimpulBlog.API
             }
 
             app.UseHttpsRedirection();
+            app.UseGlobalExceptionHandler();
 
             app.UseRouting();
 
