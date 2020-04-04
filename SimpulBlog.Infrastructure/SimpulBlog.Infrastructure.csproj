@@ -8,8 +8,15 @@
     <Folder Include="Dtos\" />
     <Folder Include="Handlers\" />
     <Folder Include="Commands\" />
-    <Folder Include="Services\" />
     <Folder Include="Queries\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Autofac.Extensions.DependencyInjection" Version="6.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\SimpulBlog.Domain\SimpulBlog.Domain.csproj" />
   </ItemGroup>
 
 </Project>
