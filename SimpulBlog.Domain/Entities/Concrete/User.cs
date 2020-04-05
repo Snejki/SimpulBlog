@@ -40,7 +40,12 @@ namespace SimpulBlog.Domain.Entities.Concrete
             SetActive(true);
         }
 
-        public void SetPassword(string hash, string salt)
+        public void ChangePassword(string hash, string salt)
+        {
+            SetPassword(hash, salt);
+        }
+
+        private void SetPassword(string hash, string salt)
         {
             if(string.IsNullOrEmpty(hash) || string.IsNullOrEmpty(salt))
                 throw new BlogException(ErrorCode.EntityValidationException, "Password is wrong");
@@ -68,7 +73,7 @@ namespace SimpulBlog.Domain.Entities.Concrete
         private void SetLastname(string lastname)
         {
             if (string.IsNullOrEmpty(lastname) || !lastname.IsOnlyLetters())
-                throw new BlogException(ErrorCode.EntityValidationException, "Firstname is wrong");
+                throw new BlogException(ErrorCode.EntityValidationException, "lastname is wrong");
 
             Lastname = lastname;
         }
@@ -76,7 +81,7 @@ namespace SimpulBlog.Domain.Entities.Concrete
         private void SetAddedAt(DateTime addedAt)
         {
             if(addedAt > DateTime.UtcNow || addedAt == DateTime.MinValue)
-                throw new BlogException(ErrorCode.EntityValidationException, "Firstname is wrong");
+                throw new BlogException(ErrorCode.EntityValidationException, "Date is wrong");
 
             AddedAt = addedAt;
         }
@@ -89,6 +94,6 @@ namespace SimpulBlog.Domain.Entities.Concrete
         private void SetActive(bool active)
         {
             IsActive = active;
-        }
+        }      
     }
 }
