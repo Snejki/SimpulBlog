@@ -10,7 +10,9 @@ using SimpulBlog.Infrastructure.Queries;
 namespace SimpulBlog.API.Controllers
 {
     [Route("api")]
-    public class AbstractController : Controller
+    [Consumes("application/json")]
+    [Produces("application/json")]
+    public class AbstractController : ControllerBase
     {
         private readonly IMediator mediatr;
         private long userId => GetLoggedUserId();
@@ -37,14 +39,14 @@ namespace SimpulBlog.API.Controllers
 
         protected async Task<T> Handle<T>(IRequest<T> request)
         {
-            if (request is IAuthQuery)
+            if (request is AuthQuery)
             {
-                (request as IAuthQuery).UserId = userId;
+                (request as AuthQuery).UserId = userId;
             }
 
-            if (request is IAuthCommand)
+            if (request is AuthCommand)
             {
-                (request as IAuthCommand).UserId = userId;
+                (request as AuthCommand).UserId = userId;
             }
 
             return await mediatr.Send(request);

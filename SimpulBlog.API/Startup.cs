@@ -4,6 +4,7 @@ using FluentValidation.AspNetCore;
 using MediatR;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -38,6 +39,8 @@ namespace SimpulBlog.API
         {
             services.AddControllers(opts => {
                 opts.Filters.Add(typeof(ModelStateValidator));
+                //opts.Filters.Add(new Microsoft.AspNetCore.Mvc.ProducesResponseTypeAttribute());
+                opts.Filters.Add(new ProducesResponseTypeAttribute(500));
             }).AddFluentValidation(fv
                 => fv.RegisterValidatorsFromAssemblyContaining<IService>());
 
@@ -47,6 +50,7 @@ namespace SimpulBlog.API
             services.AddMediatR(typeof(IService));
             services.AddAutoMapper(typeof(IService));
             services.AddJwtAuthentication(Configuration);
+            services.AddSwagger();
         }
 
         public void ConfigureContainer(ContainerBuilder builder)
@@ -62,7 +66,8 @@ namespace SimpulBlog.API
         {
             app.UseHttpsRedirection();
             app.UseGlobalExceptionHandler();
-
+            app.UseSwaggerExt();
+            app.UseSwaggerUI();
             app.UseRouting();
 
             app.UseAuthentication();

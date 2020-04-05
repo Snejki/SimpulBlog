@@ -1,8 +1,10 @@
-﻿using System.Threading.Tasks;
+﻿using System.Net;
+using System.Threading.Tasks;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SimpulBlog.Infrastructure.Commands.UserCommands;
+using SimpulBlog.Infrastructure.Dtos.UserDtos;
 
 namespace SimpulBlog.API.Controllers
 {
@@ -16,11 +18,11 @@ namespace SimpulBlog.API.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult> Add([FromBody] AddUserCommand command)
+        public async Task<ActionResult<AddUserDto>> Post([FromBody] AddUserCommand command)
             => Ok(await Handle(command));
 
-        [HttpPost("change-password")]
-        public async Task<ActionResult> ChangePassword([FromBody] ChangeUserPasswordCommand command)
+        [HttpPut("change-password")]
+        public async Task<ActionResult> Put(ChangeUserPasswordCommand command)
         {
             await Handle(command);
             return NoContent();

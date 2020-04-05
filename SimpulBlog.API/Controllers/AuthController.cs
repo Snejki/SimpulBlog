@@ -20,7 +20,7 @@ namespace SimpulBlog.API.Controllers
 
         [HttpGet]
         [Authorize]
-        public async Task<ActionResult> AuthTest()
+        public ActionResult AuthTest()
             => Ok(new { ok = "ok" });
     }
 }
