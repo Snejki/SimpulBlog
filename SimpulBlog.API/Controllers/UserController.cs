@@ -1,7 +1,7 @@
 ﻿using System.Threading.Tasks;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
-using SimpulBlog.Infrastructure.Queries.UserQueries;
+using SimpulBlog.Infrastructure.Commands.UserCommands;
 
 namespace SimpulBlog.API.Controllers
 {
@@ -14,7 +14,7 @@ namespace SimpulBlog.API.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult> Add([FromBody] AddUserQuery query)
+        public async Task<ActionResult> Add([FromBody] AddUserCommand query)
             => Ok(await Handle(query));
     }
 }

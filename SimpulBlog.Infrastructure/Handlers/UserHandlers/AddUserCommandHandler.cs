@@ -4,16 +4,16 @@ using SimpulBlog.Core.Exceptions;
 using SimpulBlog.Domain.Entities.Concrete;
 using SimpulBlog.Domain.Repositories.Abstract;
 using SimpulBlog.Infrastructure.Dtos.UserDtos;
-using SimpulBlog.Infrastructure.Queries.UserQueries;
 using System;
 using System.Threading;
 using System.Threading.Tasks;
 using SimpulBlog.Core.Helpers;
 using SimpulBlog.Infrastructure.Services.Abstract;
+using SimpulBlog.Infrastructure.Commands.UserCommands;
 
 namespace SimpulBlog.Infrastructure.Handlers.UserHandlers
 {
-    public class AddUserQueryHandler : IRequestHandler<AddUserQuery, AddUserDto>
+    public class AddUserCommandHandler : IRequestHandler<AddUserCommand, AddUserDto>
     {
         private readonly IUserRepository userRepository;
         private readonly ICommitRepository<User> commitRepository;
@@ -22,7 +22,7 @@ namespace SimpulBlog.Infrastructure.Handlers.UserHandlers
         private User user = null;
         private string userPassword;
 
-        public AddUserQueryHandler(
+        public AddUserCommandHandler(
             IUserRepository userRepository,
             ICommitRepository<User> commitRepository,
             IEncrypter encrypter
@@ -33,7 +33,7 @@ namespace SimpulBlog.Infrastructure.Handlers.UserHandlers
             this.encrypter = encrypter;
         }
 
-        public async Task<AddUserDto> Handle(AddUserQuery request, CancellationToken cancellationToken)
+        public async Task<AddUserDto> Handle(AddUserCommand request, CancellationToken cancellationToken)
         {
             await CheckIfUserIsAdminAndCanAddUser(request.UserId);
             await MakeSureUserWithProvidedDataNotExsist(request.Email);
@@ -55,7 +55,7 @@ namespace SimpulBlog.Infrastructure.Handlers.UserHandlers
             await userRepository.MakeSureUserWithProvidedEmailNotExsist(email);
         }
 
-        private void PrepareUser(AddUserQuery request)
+        private void PrepareUser(AddUserCommand request)
         {
             userPassword = PasswordHelpers.GeneratePassword();
             var salt = encrypter.GetSalt(userPassword);

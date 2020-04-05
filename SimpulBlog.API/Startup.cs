@@ -9,6 +9,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using SimpulBlog.API.Extensions;
 using SimpulBlog.API.Filters;
+using SimpulBlog.Core.Modules;
 using SimpulBlog.Domain;
 using SimpulBlog.Domain.Modules;
 using SimpulBlog.Infrastructure.Modules;
@@ -45,6 +46,7 @@ namespace SimpulBlog.API
 
             services.AddMediatR(typeof(IService));
             services.AddAutoMapper(typeof(IService));
+            services.AddJwtAuthentication(Configuration);
         }
 
         public void ConfigureContainer(ContainerBuilder builder)
@@ -52,6 +54,7 @@ namespace SimpulBlog.API
             // Register your own things directly with Autofac, like:
             builder.RegisterModule(new RepositoryModule());
             builder.RegisterModule(new ServiceModule());
+            builder.RegisterModule(new SettingsModule(Configuration));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -62,6 +65,7 @@ namespace SimpulBlog.API
 
             app.UseRouting();
 
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>

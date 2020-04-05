@@ -1,10 +1,10 @@
 ﻿using FluentValidation;
 using SimpulBlog.Core.Extensions;
-using SimpulBlog.Infrastructure.Queries.UserQueries;
+using SimpulBlog.Infrastructure.Commands.UserCommands;
 
 namespace SimpulBlog.Infrastructure.Validators.UserValidators
 {
-    public class AddUserQueryValidator :  AbstractValidator<AddUserQuery>
+    public class AddUserQueryValidator :  AbstractValidator<AddUserCommand>
     {
         public AddUserQueryValidator()
         {

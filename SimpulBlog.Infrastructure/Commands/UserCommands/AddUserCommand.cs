@@ -1,9 +1,9 @@
 ﻿using MediatR;
 using SimpulBlog.Infrastructure.Dtos.UserDtos;
 
-namespace SimpulBlog.Infrastructure.Queries.UserQueries
+namespace SimpulBlog.Infrastructure.Commands.UserCommands
 {
-    public class AddUserQuery : IRequest<AddUserDto>, IAuthQuery
+    public class AddUserCommand : IRequest<AddUserDto>, IAuthCommand
     {
         public string Email { get; set; }
         public string Firstname { get; set; }
