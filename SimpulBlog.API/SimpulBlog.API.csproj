@@ -30,5 +30,9 @@
     <ProjectReference Include="..\SimpulBlog.Infrastructure\SimpulBlog.Infrastructure.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="wwwroot\Uploads\" />
+  </ItemGroup>
+
 
 </Project>

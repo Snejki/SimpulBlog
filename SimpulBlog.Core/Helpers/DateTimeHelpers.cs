@@ -9,9 +9,6 @@ namespace SimpulBlog.Core.Helpers
             return DateTime.UtcNow;
         }
 
-        public static string xd()
-        {
-            return "xd";
-        }
+        
     }
 }

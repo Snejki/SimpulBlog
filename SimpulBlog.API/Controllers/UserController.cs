@@ -1,5 +1,4 @@
-﻿using System.Net;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -22,7 +21,7 @@ namespace SimpulBlog.API.Controllers
             => Ok(await Handle(command));
 
         [HttpPut("change-password")]
-        public async Task<ActionResult> Put(ChangeUserPasswordCommand command)
+        public async Task<ActionResult> Put([FromBody] ChangeUserPasswordCommand command)
         {
             await Handle(command);
             return NoContent();

@@ -39,8 +39,6 @@ namespace SimpulBlog.API
         {
             services.AddControllers(opts => {
                 opts.Filters.Add(typeof(ModelStateValidator));
-                //opts.Filters.Add(new Microsoft.AspNetCore.Mvc.ProducesResponseTypeAttribute());
-                opts.Filters.Add(new ProducesResponseTypeAttribute(500));
             }).AddFluentValidation(fv
                 => fv.RegisterValidatorsFromAssemblyContaining<IService>());
 
@@ -65,6 +63,7 @@ namespace SimpulBlog.API
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             app.UseHttpsRedirection();
+            app.UseStaticFiles();
             app.UseGlobalExceptionHandler();
             app.UseSwaggerExt();
             app.UseSwaggerUI();

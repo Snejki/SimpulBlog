@@ -19,7 +19,7 @@ namespace SimpulBlog.API.Controllers
             => Ok(await Handle(query));
 
         [HttpGet]
-        [Authorize]
+        
         public ActionResult AuthTest()
             => Ok(new { ok = "ok" });
     }

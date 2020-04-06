@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using SimpulBlog.Infrastructure.Commands;
+using SimpulBlog.Infrastructure.Dtos;
 using SimpulBlog.Infrastructure.Queries;
 
 namespace SimpulBlog.API.Controllers
@@ -15,7 +16,8 @@ namespace SimpulBlog.API.Controllers
     public class AbstractController : ControllerBase
     {
         private readonly IMediator mediatr;
-        private long userId => GetLoggedUserId();
+        //private long userId => GetLoggedUserId();
+        private long userId => 2;
 
         protected AbstractController(IMediator mediatr)
         {
@@ -50,6 +52,13 @@ namespace SimpulBlog.API.Controllers
             }
 
             return await mediatr.Send(request);
+        }
+
+        protected void AddPaginationHeaders(PaginationDto pagination)
+        {
+            Response.Headers.Add("Pagination-Current-Page", pagination.CurrentPage.ToString());
+            Response.Headers.Add("Pagination-Page-Size", pagination.PageSize.ToString());
+            Response.Headers.Add("Pagination-Pages-Count", pagination.PagesCount.ToString());
         }
     }
 }

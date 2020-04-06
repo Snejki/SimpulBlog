@@ -12,5 +12,20 @@ namespace SimpulBlog.Domain.Entities.Concrete
 
         public long ArticleId { get; set; }
         public virtual Article Article { get; set; }
+
+        protected ArticleCategory()
+        {
+            
+        }
+
+        public ArticleCategory(long categoryId)
+        {
+            SetCategoryId(categoryId);
+        }
+
+        private void SetCategoryId(long categoryId)
+        {
+            CategoryId = categoryId;
+        }
     }
 }
