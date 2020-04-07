@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using SimpulBlog.Infrastructure.Dtos.ArticleDtos;
+using SimpulBlog.Infrastructure.Handlers.ArticleHanlders;
 using SimpulBlog.Infrastructure.Queries.ArticleQueries;
 
 namespace SimpulBlog.API.Controllers
@@ -23,6 +24,10 @@ namespace SimpulBlog.API.Controllers
             AddPaginationHeaders(response.Pagination);
             return Ok(response.Articles);
         }
+
+        [HttpGet("{id:long}")]
+        public async Task<ActionResult<ArticleDetailsDto>> Get(long id)
+            => Ok(await Handle(new GetArticleQuery(id)));
 
 
     }

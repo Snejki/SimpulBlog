@@ -1,10 +1,10 @@
 ﻿using System;
-using SimpulBlog.Domain.Entities.Concrete;
 
 namespace SimpulBlog.Infrastructure.Dtos.ArticleDtos
 {
     public class ArticleDto
     {
+        public long Id { get; set; }
         public string Title { get; set; }
         public string TitlePhotoname { get; set; }
         public string ShortText { get; set; }

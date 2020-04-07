@@ -1,65 +1,49 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using AutoMapper;
 using MediatR;
 using SimpulBlog.Domain.Entities.Concrete;
 using SimpulBlog.Domain.Repositories.Abstract;
-using SimpulBlog.Infrastructure.Dtos;
 using SimpulBlog.Infrastructure.Dtos.ArticleDtos;
+using SimpulBlog.Infrastructure.Dtos.CommentDtos;
+using SimpulBlog.Infrastructure.Dtos.TagDtos;
 using SimpulBlog.Infrastructure.Queries.ArticleQueries;
 
 namespace SimpulBlog.Infrastructure.Handlers.ArticleHanlders
 {
-    public class GetArticleQueryHandler : IRequestHandler<GetArticlesQuery, ArticlesWithPaginationDto>
+    public class GetArticleQueryHandler : IRequestHandler<GetArticleQuery, ArticleDetailsDto>
     {
         private readonly IArticleRepository articleRepository;
-        private readonly ICategoryRepository categoryRepository;
         private readonly IMapper mapper;
 
-        private ICollection<Article> articles;
-        private PaginationDto pagination;
+        private Article article;
 
-        public GetArticleQueryHandler(IArticleRepository articleRepository, IMapper mapper, ICategoryRepository categoryRepository)
+        public GetArticleQueryHandler(IArticleRepository articleRepository, IMapper mapper)
         {
             this.articleRepository = articleRepository;
             this.mapper = mapper;
-            this.categoryRepository = categoryRepository;
         }
 
-        public async Task<ArticlesWithPaginationDto> Handle(GetArticlesQuery request, CancellationToken cancellationToken)
+        public async Task<ArticleDetailsDto> Handle(GetArticleQuery request, CancellationToken cancellationToken)
         {
-            await CheckIfCategoryExist(request.CategoryId);
-            await GetPagination(request);
-            await GetArticlesPage(request.CategoryId);
-
+            await GetArticle(request.ArticleId);
             return GetDto();
         }
 
-        private async Task CheckIfCategoryExist(long categoryId)
-        {
-            if(categoryId != 0)
-                await categoryRepository.GetById(categoryId);
-        }
+        private async Task GetArticle(long articleId)
+            => article = await articleRepository.GetById(articleId);
 
-        private async Task GetPagination(GetArticlesQuery request)
+        private ArticleDetailsDto GetDto()
         {
-            var pagesCount = await articleRepository.GetPublishedPagesCount(request.PageSize, request.CategoryId);
-            var currentPage = pagesCount < request.Page ? pagesCount : request.Page;
+            var dto = mapper.Map<ArticleDetailsDto>(article);
+            dto.Tags = mapper.Map<ICollection<TagDto>>(article.Tags);
+            dto.Comments = mapper.Map<ICollection<CommentDto>>(article.Comments.Where(c => !c.DeletedAt.HasValue));
 
-            pagination = new PaginationDto(pagesCount, currentPage, request.PageSize);
-        }
-
-        private async Task GetArticlesPage(long categoryId)
-        {
-            articles = await articleRepository.GetPublishedPage(pagination.CurrentPage, pagination.PageSize, categoryId);
-        }
-
-        private ArticlesWithPaginationDto GetDto()
-        {
-            return new ArticlesWithPaginationDto(
-                pagination, 
-                mapper.Map<ICollection<ArticleDto>>(articles));
+            return dto;
         }
     }
 }

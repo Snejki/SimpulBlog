@@ -1,7 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using SimpulBlog.Core.Extensions;
@@ -19,6 +17,9 @@ namespace SimpulBlog.Domain.Repositories.Concrete
         {
             this.context = context;
         }
+
+        public async Task<Article> GetById(long articleId)
+            => await context.Articles.GetById(articleId);
 
         public async Task<ICollection<Article>> GetPublishedPage(int page, int pageSize, long categoryId)
         {
