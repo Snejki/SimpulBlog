@@ -49,6 +49,7 @@ namespace SimpulBlog.API
             services.AddAutoMapper(typeof(IService));
             services.AddJwtAuthentication(Configuration);
             services.AddSwagger();
+            services.AddMemoryCache();
         }
 
         public void ConfigureContainer(ContainerBuilder builder)

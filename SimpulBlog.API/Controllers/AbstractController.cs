@@ -4,6 +4,7 @@ using System.Security.Claims;
 using System.Threading.Tasks;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Caching.Memory;
 using SimpulBlog.Infrastructure.Commands;
 using SimpulBlog.Infrastructure.Dtos;
 using SimpulBlog.Infrastructure.Queries;

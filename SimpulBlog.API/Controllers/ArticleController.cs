@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Caching.Memory;
+using SimpulBlog.Core.Helpers;
 using SimpulBlog.Infrastructure.Dtos.ArticleDtos;
-using SimpulBlog.Infrastructure.Handlers.ArticleHanlders;
 using SimpulBlog.Infrastructure.Queries.ArticleQueries;
 
 namespace SimpulBlog.API.Controllers
@@ -13,8 +13,10 @@ namespace SimpulBlog.API.Controllers
     [Route("api/article")]
     public class ArticleController : AbstractController
     {
-        public ArticleController(IMediator mediatr) : base(mediatr)
+        private readonly IMemoryCache memoryCache;
+        public ArticleController(IMediator mediatr, IMemoryCache memoryCache) : base(mediatr)
         {
+            this.memoryCache = memoryCache;
         }
 
         [HttpGet]
@@ -27,8 +29,19 @@ namespace SimpulBlog.API.Controllers
 
         [HttpGet("{id:long}")]
         public async Task<ActionResult<ArticleDetailsDto>> Get(long id)
-            => Ok(await Handle(new GetArticleQuery(id)));
+            => Ok(await HandleWithCache(new GetArticleQuery(id), CacheHelpers.GetArticleCacheKey(id)));
 
+        protected async Task<T> HandleWithCache<T>(IRequest<T> request, string cacheKey)
+        {
+            if (memoryCache.TryGetValue(cacheKey, out T response))
+            {
+                return response;
+            }
 
+            response = await Handle(request);
+            memoryCache.Set(cacheKey, response, TimeSpan.FromHours(12));
+
+            return response;
+        }
     }
 }
