@@ -23,7 +23,10 @@ namespace SimpulBlog.Domain.Repositories.Concrete
 
 
         public async Task Remove(T entity)
-            => await Task.FromResult(dbSet.Remove(entity));
+        {
+            if (!(entity is IDeleteAble able))
+                await Task.FromResult(dbSet.Remove(entity));
+        }
 
         public async Task Update(T entity)
             => await Task.FromResult(dbSet.Update(entity));

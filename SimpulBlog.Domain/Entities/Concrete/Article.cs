@@ -9,7 +9,7 @@ namespace SimpulBlog.Domain.Entities.Concrete
     public class Article : Entity, IDeleteAble
     {
         public string Title { get; set; }
-        public string TitlePhotoname { get; set; }
+        public string TitlePhotoName { get; set; }
         public string Slug { get; set; }
         public string ShortText { get; set; }
         public string ArticleText { get; set; }
@@ -27,6 +27,11 @@ namespace SimpulBlog.Domain.Entities.Concrete
         public virtual ICollection<ArticleCategory> ArticleCategories { get; set; }
         public virtual ICollection<Comment> Comments { get; set; }
         public virtual ICollection<ArticleView> ArticleViews { get; set; }
+
+        protected Article()
+        {
+
+        }
 
         public Article(
             string title, 
@@ -54,9 +59,33 @@ namespace SimpulBlog.Domain.Entities.Concrete
             SetArticleCategories(articleCategories);
         }
 
-        public Article()
+        public void EditArticle(
+            string title,
+            string titlePhotoName,
+            string slug,
+            string shortText,
+            string articleText,
+            int readTime,
+            DateTime publishAt,
+            DateTime lastModifiedAt,
+            ICollection<Tag> tags,
+            ICollection<ArticleCategory> articleCategories)
         {
-            
+            SetTitle(title);
+            SetTitlePhotoName(titlePhotoName);
+            SetSlug(slug);
+            SetShortText(shortText);
+            SetArticleText(articleText);
+            SetReadTime(readTime);
+            SetPublishDate(publishAt);
+            SetTags(tags);
+            SetArticleCategories(articleCategories);
+            SetLastModifiedAt(lastModifiedAt);
+        }
+
+        public void Delete(DateTime deletedAt)
+        {
+            SetDeletedAt(deletedAt);
         }
 
         private void SetTitle(string title)
@@ -69,7 +98,7 @@ namespace SimpulBlog.Domain.Entities.Concrete
 
         private void SetTitlePhotoName(string titlePhotoName)
         {
-            TitlePhotoname = titlePhotoName;
+            TitlePhotoName = titlePhotoName;
         }
 
         private void SetSlug(string slug)
@@ -106,12 +135,28 @@ namespace SimpulBlog.Domain.Entities.Concrete
             AddedAt = addedAt;
         }
 
+        private void SetLastModifiedAt(DateTime lastModifiedAt)
+        {
+            if (lastModifiedAt > DateTime.UtcNow || lastModifiedAt == DateTime.MinValue)
+                throw new BlogException(ErrorCode.EntityValidationException, "Date is wrong");
+
+            LastModifiedAt = lastModifiedAt;
+        }
+
         private void SetPublishDate(DateTime publishDate)
         {
             if (publishDate > DateTime.UtcNow || publishDate == DateTime.MinValue)
                 throw new BlogException(ErrorCode.EntityValidationException, "Date is wrong");
 
             PublishAt = publishDate;
+        }
+
+        private void SetDeletedAt(DateTime deletedAt)
+        {
+            if (deletedAt > DateTime.UtcNow || deletedAt == DateTime.MinValue)
+                throw new BlogException(ErrorCode.EntityValidationException, "Date is wrong");
+
+            DeletedAt = deletedAt;
         }
 
         private void SetUserId(long userId)

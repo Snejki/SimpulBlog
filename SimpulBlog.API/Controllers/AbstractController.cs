@@ -18,7 +18,7 @@ namespace SimpulBlog.API.Controllers
     {
         private readonly IMediator mediatr;
         //private long userId => GetLoggedUserId();
-        private long userId => 2;
+        private long userId => 1;
 
         protected AbstractController(IMediator mediatr)
         {

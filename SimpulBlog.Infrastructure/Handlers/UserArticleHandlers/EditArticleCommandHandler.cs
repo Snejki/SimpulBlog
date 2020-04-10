@@ -6,19 +6,19 @@ using SimpulBlog.Infrastructure.Services.Abstract;
 
 namespace SimpulBlog.Infrastructure.Handlers.UserArticleHandlers
 {
-    public class AddArticleCommandHandler : IRequestHandler<AddArticleCommand>
+    public class EditArticleCommandHandler : IRequestHandler<EditArticleCommand>
     {
         private readonly IUserArticleService articleService;
 
-        public AddArticleCommandHandler(IUserArticleService articleService)
+        public EditArticleCommandHandler(IUserArticleService articleService)
         {
             this.articleService = articleService;
         }
 
-        public async Task<Unit> Handle(AddArticleCommand request, CancellationToken cancellationToken)
+        public async Task<Unit> Handle(EditArticleCommand request, CancellationToken cancellationToken)
         {
-            await articleService.AddArticle(request);
-            return Unit.Value;;
+            await articleService.EditArticle(request);
+            return Unit.Value;
         }
     }
 }
