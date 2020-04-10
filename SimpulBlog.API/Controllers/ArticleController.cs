@@ -5,6 +5,7 @@ using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Caching.Memory;
 using SimpulBlog.Core.Helpers;
+using SimpulBlog.Infrastructure.Commands.ArticleViewmCommands;
 using SimpulBlog.Infrastructure.Dtos.ArticleDtos;
 using SimpulBlog.Infrastructure.Queries.ArticleQueries;
 
@@ -29,7 +30,12 @@ namespace SimpulBlog.API.Controllers
 
         [HttpGet("{id:long}")]
         public async Task<ActionResult<ArticleDetailsDto>> Get(long id)
-            => Ok(await HandleWithCache(new GetArticleQuery(id), CacheHelpers.GetArticleCacheKey(id)));
+        {
+            var article = await HandleWithCache(new GetArticleQuery(id), CacheHelpers.GetArticleCacheKey(id));
+            await Handle(new AddArticleViewCommand(id));
+
+            return Ok(article);
+        }
 
         protected async Task<T> HandleWithCache<T>(IRequest<T> request, string cacheKey)
         {

@@ -1,7 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using AutoMapper;
@@ -35,7 +33,7 @@ namespace SimpulBlog.Infrastructure.Handlers.ArticleHanlders
         }
 
         private async Task GetArticle(long articleId)
-            => article = await articleRepository.GetById(articleId);
+            => article = await articleRepository.GetPublishedById(articleId);
 
         private ArticleDetailsDto GetDto()
         {

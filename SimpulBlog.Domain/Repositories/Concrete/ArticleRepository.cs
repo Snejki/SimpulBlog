@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
+using SimpulBlog.Core.Exceptions;
 using SimpulBlog.Core.Extensions;
 using SimpulBlog.Core.Helpers;
 using SimpulBlog.Domain.Entities.Concrete;
@@ -20,6 +21,15 @@ namespace SimpulBlog.Domain.Repositories.Concrete
 
         public async Task<Article> GetById(long articleId)
             => await context.Articles.GetById(articleId);
+
+        public async Task<Article> GetPublishedById(long articleId)
+        {
+            var article = await GetById(articleId);
+            if(article.PublishAt > DateTimeHelpers.GetCurrenTime())
+                throw new BlogException(ErrorCode.NotFound);
+
+            return article;
+        }
 
         public async Task<ICollection<Article>> GetPublishedPage(int page, int pageSize, long categoryId)
         {
