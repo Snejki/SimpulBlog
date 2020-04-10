@@ -10,14 +10,11 @@ namespace SimpulBlog.API.Filters
     {
         public void Apply(OpenApiOperation operation, OperationFilterContext context)
         {
-            // Policy names map to scopes
-            var requiredScopes = context.MethodInfo
-                .GetCustomAttributes(true)
-                .OfType<AuthorizeAttribute>()
-                .Select(attr => attr.Policy)
-                .Distinct();
+            var authAttributes = context.MethodInfo.DeclaringType.GetCustomAttributes(true)
+                .Union(context.MethodInfo.GetCustomAttributes(true))
+                .OfType<AuthorizeAttribute>().Select(x => x.Policy);
 
-            if (requiredScopes.Any())
+            if (authAttributes.Any())
             {
                 operation.Responses.Add("401", new OpenApiResponse { Description = "Unauthorized" });
                 operation.Responses.Add("403", new OpenApiResponse { Description = "Forbidden" });
@@ -31,7 +28,7 @@ namespace SimpulBlog.API.Filters
                 {
                     new OpenApiSecurityRequirement
                     {
-                        [ oAuthScheme ] = requiredScopes.ToList()
+                        [ oAuthScheme ] = authAttributes.ToList()
                     }
                 };
             }
